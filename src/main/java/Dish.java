@@ -8,18 +8,13 @@ public class Dish {
     // Guest
     public synchronized void waitDish() {
         try {
-
             System.out.printf("%s ждёт своё блюдо\n", Thread.currentThread().getName());
             wait();
-
             restaurant.guest.haveDinner();
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 
     // Waiter
     public synchronized void bringDish() {

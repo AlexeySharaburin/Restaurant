@@ -1,11 +1,11 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Restaurant {
 
-    List<Guests> guests = new ArrayList<>();
+//    List<FreeWaiters> freeWaiters = new ArrayList<>();
+//    List<Guests> guests = new ArrayList<>();
     List<Dishes> dishes = new ArrayList<>();
-    List<FreeWaiters> freeWaiters = new ArrayList<>();
+    List<String> waitingList = new ArrayList<>();
 
     Waiter waiter = new Waiter(this);
     Guest guest = new Guest(this);
@@ -38,17 +38,17 @@ public class Restaurant {
         guest.waitWaiter();
     }
 
-    public List<Guests> getGuests() {
-        return guests;
-    }
-
     public List<Dishes> getDishes() {
         return dishes;
     }
 
-    public List<FreeWaiters> getFreeWaiters() {
-        return freeWaiters;
-    }
+//    public List<FreeWaiters> getFreeWaiters() {
+//        return freeWaiters;
+//    }
+//
+//    public List<Guests> getGuests() {
+//        return guests;
+//    }
 
 
 }
