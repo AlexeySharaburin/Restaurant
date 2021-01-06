@@ -19,7 +19,6 @@ public class Order {
     // Waiter
     public synchronized void takeOrder() {
         try {
-//            restaurant.waiter.nameGuest = restaurant.waitingList.remove(0);
             notify();
         } catch (Exception e) {
             e.printStackTrace();
