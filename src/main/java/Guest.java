@@ -14,7 +14,6 @@ public class Guest {
                 restaurant.waitingList.add(Thread.currentThread().getName());
                 System.out.println("Лист ожидания.Текущее состояние: " + restaurant.waitingList);
             }
-//            restaurant.waiter.takeTable();
             restaurant.order.makeOrder();
         } catch (Exception e) {
             e.printStackTrace();
