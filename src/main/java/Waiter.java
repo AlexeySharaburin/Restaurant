@@ -7,21 +7,20 @@ public class Waiter {
     }
 
     //Waiter
-    public void waitGuest() {
+    public synchronized void waitGuest() {
         try {
 
             System.out.printf("%s пришёл на работу\n", Thread.currentThread().getName());
             String nameCurrentGuest;
             while (true) {
+
+                Thread.sleep(2000);
+                System.out.printf("%s готов обслужить клиента\n", Thread.currentThread().getName());
+                Thread.sleep(4000);
+
+                wait();
+
                 synchronized (restaurant.waitingList) {
-                    Thread.sleep(2000);
-                    System.out.printf("%s готов обслужить клиента\n", Thread.currentThread().getName());
-                    Thread.sleep(4000);
-
-                    if (restaurant.waitingList.isEmpty()) {
-                        break;
-                    }
-
                     nameCurrentGuest = restaurant.waitingList.remove(0);
                 }
 
@@ -35,13 +34,21 @@ public class Waiter {
 
             }
 
-            Thread.sleep(5000);
-            System.out.printf("%s пошёл домой\n", Thread.currentThread().getName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
+    // Guest
+    public synchronized void takeTable() {
+        try {
+            notify();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
 }
+
+
 
