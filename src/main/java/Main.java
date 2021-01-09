@@ -45,4 +45,15 @@ public class Main {
     }
 }
 
+//
+// for (Thread thread : threadsListWaiters) {
+//         try {
+//         thread.interrupt();
+////                System.out.printf("%s пошёл домой\n", thread.getName());
+//         Thread.sleep(1000);
+//         } catch (InterruptedException e) {
+//         System.out.printf("%s пошёл домой\n", thread.getName());
+//         }
+//         }
+
 

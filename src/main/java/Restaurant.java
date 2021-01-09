@@ -7,19 +7,26 @@ public class Restaurant {
 
     Waiter waiter = new Waiter(this);
     Guest guest = new Guest(this);
-
     Order order = new Order(this);
     Dish dish = new Dish(this);
 
     public void cookCooking() {
         try {
+            int i = 0;
             System.out.printf("%s открыл 'РесторанЪ'!\n", Thread.currentThread().getName());
             while (Main.dishesMax != 0) {
-                System.out.printf("%s начал готовить блюдо\n", Thread.currentThread().getName());
-                Thread.sleep(3000);
+                i++;
+                String dishName = "Блюдо " + i;
+                System.out.printf("%s начал готовить %s\n", Thread.currentThread().getName(), dishName);
+                Thread.sleep(5000);
                 Main.dishesMax--;
-                getDishes().add(new Dishes());
-                System.out.printf("%s приготовил блюдо\n", Thread.currentThread().getName());
+
+                synchronized (dishes) {
+                    dishes.add(new Dishes(dishName));
+                    System.out.printf("%s приготовил %s\n", Thread.currentThread().getName(), dishName);
+                }
+
+
             }
             Thread.sleep(5000);
             System.out.printf("%s закончил работу и пошёл домой\n", Thread.currentThread().getName());

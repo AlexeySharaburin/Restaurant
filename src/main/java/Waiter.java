@@ -28,7 +28,11 @@ public class Waiter {
 
                 System.out.printf("%s принял заказ у %s\n", Thread.currentThread().getName(), nameCurrentGuest);
 
-                System.out.printf("%s несёт блюдо %s\n", Thread.currentThread().getName(), nameCurrentGuest);
+                synchronized (restaurant.dishes) {
+                    Dishes dish = restaurant.dishes.remove(0);
+                    System.out.printf("%s несёт блюдо %s для %s\n", Thread.currentThread().getName(), dish.getDishName(), nameCurrentGuest);
+
+                }
 
                 restaurant.dish.bringDish();
 
