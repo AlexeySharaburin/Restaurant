@@ -14,10 +14,10 @@ public class Main {
         List<Thread> threadsListWaiters = new ArrayList<>();
         List<Thread> threadsListGuests = new ArrayList<>();
 
-        new Thread(null, restaurant::cookCooking, "Повар").start();
-
         ThreadGroup waiters = new ThreadGroup("Waiters");
         ThreadGroup clients = new ThreadGroup("Clients");
+
+        System.out.println("Ресторан открыт!");
 
         for (int i = 1; i < (waiter + 1); i++) {
             Thread thread = new Thread(waiters, restaurant::startWorking, "Официант " + i);
@@ -45,15 +45,5 @@ public class Main {
     }
 }
 
-//
-// for (Thread thread : threadsListWaiters) {
-//         try {
-//         thread.interrupt();
-////                System.out.printf("%s пошёл домой\n", thread.getName());
-//         Thread.sleep(1000);
-//         } catch (InterruptedException e) {
-//         System.out.printf("%s пошёл домой\n", thread.getName());
-//         }
-//         }
 
 

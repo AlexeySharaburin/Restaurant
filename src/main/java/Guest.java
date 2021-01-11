@@ -12,10 +12,9 @@ public class Guest {
             System.out.printf("%s пришёл в ресторан\n", Thread.currentThread().getName());
             synchronized (restaurant.waitingList) {
                 restaurant.waitingList.add(Thread.currentThread().getName());
-                System.out.println("Лист ожидания: " + restaurant.waitingList);
             }
             restaurant.waiter.takeTable();
-            restaurant.order.makeOrder();
+            restaurant.dish.waitDish();
         } catch (Exception e) {
             e.printStackTrace();
         }

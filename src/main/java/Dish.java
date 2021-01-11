@@ -8,8 +8,10 @@ public class Dish {
     // Guest
     public synchronized void waitDish() {
         try {
-            System.out.printf("%s ждёт своё блюдо\n", Thread.currentThread().getName());
             wait();
+            synchronized (restaurant.dishes) {
+                System.out.printf("%s получил %s\n", Thread.currentThread().getName(), restaurant.dishes.remove(0).getDishName());
+            }
             restaurant.guest.haveDinner();
         } catch (Exception e) {
             e.printStackTrace();
@@ -19,6 +21,7 @@ public class Dish {
     // Waiter
     public synchronized void bringDish() {
         try {
+
             notify();
         } catch (Exception e) {
             e.printStackTrace();
