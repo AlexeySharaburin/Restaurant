@@ -18,6 +18,7 @@ public class Main {
         ThreadGroup clients = new ThreadGroup("Clients");
 
         System.out.println("Ресторан открыт!");
+        restaurant.cooking();
 
         for (int i = 1; i < (waiter + 1); i++) {
             Thread thread = new Thread(waiters, restaurant::startWorking, "Официант " + i);

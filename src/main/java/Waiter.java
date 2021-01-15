@@ -13,6 +13,7 @@ public class Waiter {
 
             System.out.printf("%s пришёл на работу\n", Thread.currentThread().getName());
             String nameCurrentGuest;
+
             while (true) {
 
                 Thread.sleep(1000);
@@ -26,22 +27,19 @@ public class Waiter {
                 }
 
                 System.out.printf("%s принял заказ у %s\n", Thread.currentThread().getName(), nameCurrentGuest);
-                if (Main.dishesMax != 0) {
-                    i++;
-                    String dishName = "Блюдо " + i;
-                    System.out.printf("%s начал разогревать %s\n", Thread.currentThread().getName(), dishName);
-                    Thread.sleep(7000);
-                    Main.dishesMax--;
-                    synchronized (restaurant.dishes) {
-                        restaurant.dishes.add(new Dishes(dishName));
-                        System.out.printf("%s несёт %s для %s\n", Thread.currentThread().getName(), dishName, nameCurrentGuest);
+                synchronized (restaurant.dishes) {
+                    if (!restaurant.dishes.isEmpty()) {
+
+                        System.out.printf("%s несёт %s для %s\n", Thread.currentThread().getName(), restaurant.dishes.get(0).getDishName(), nameCurrentGuest);
+
+                        synchronized (restaurant.dish) {
+                            restaurant.dish.bringDish();
+                        }
+                    } else {
+                        System.out.println("Кухня закрыта!");
                     }
 
-                    restaurant.dish.bringDish();
-                } else {
-                    System.out.println("Кухня закрыта!");
                 }
-
             }
 
         } catch (Exception e) {

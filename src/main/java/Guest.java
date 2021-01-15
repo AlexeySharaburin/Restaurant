@@ -14,7 +14,9 @@ public class Guest {
                 restaurant.waitingList.add(Thread.currentThread().getName());
             }
             restaurant.waiter.takeTable();
-            restaurant.dish.waitDish();
+            synchronized (restaurant.dish) {
+                restaurant.dish.waitDish();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
