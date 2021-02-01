@@ -1,22 +1,33 @@
 public class Guest {
 
     Restaurant restaurant;
+    Dinner dinner;
 
     public Guest(Restaurant restaurant) {
         this.restaurant = restaurant;
     }
 
-    // Guest
+     //  Guest
     public void waitWaiter() {
         try {
             System.out.printf("%s пришёл в ресторан\n", Thread.currentThread().getName());
             synchronized (restaurant.waitingList) {
                 restaurant.waitingList.add(Thread.currentThread().getName());
             }
+
             restaurant.waiter.takeTable();
-            synchronized (restaurant.dish) {
-                restaurant.dish.waitDish();
+
+
+            Thread.sleep(5000);
+            Dish currentDish = restaurant.currentDish;
+            System.out.println(currentDish.getGuestName());
+
+
+            synchronized (currentDish) {
+                dinner.waitDish();
             }
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }

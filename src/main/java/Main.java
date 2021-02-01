@@ -3,9 +3,9 @@ import java.util.List;
 
 public class Main {
 
-    static int dishesMax = 5;
-    static int client = 5;
-    static int waiter = 3;
+    static int dishesMax = 1;
+    static int client = 1;
+    static int officiants = 1;
 
     public static void main(String[] args) throws InterruptedException {
 
@@ -14,13 +14,14 @@ public class Main {
         List<Thread> threadsListWaiters = new ArrayList<>();
         List<Thread> threadsListGuests = new ArrayList<>();
 
+
         ThreadGroup waiters = new ThreadGroup("Waiters");
         ThreadGroup clients = new ThreadGroup("Clients");
 
         System.out.println("Ресторан открыт!");
         restaurant.cooking();
 
-        for (int i = 1; i < (waiter + 1); i++) {
+        for (int i = 1; i < (officiants + 1); i++) {
             Thread thread = new Thread(waiters, restaurant::startWorking, "Официант " + i);
             thread.start();
             threadsListWaiters.add(thread);
@@ -44,6 +45,7 @@ public class Main {
         }
 
     }
+
 }
 
 

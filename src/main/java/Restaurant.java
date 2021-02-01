@@ -5,9 +5,10 @@ public class Restaurant {
     final List<Dishes> dishes = new ArrayList<>();
     final List<String> waitingList = new ArrayList<>();
 
+    public Dish currentDish = new Dish();
+
     Waiter waiter = new Waiter(this);
     Guest guest = new Guest(this);
-    final Dish dish = new Dish(this);
 
     public void startWorking() {
         waiter.waitGuest();
