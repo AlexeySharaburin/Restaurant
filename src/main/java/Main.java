@@ -3,9 +3,9 @@ import java.util.List;
 
 public class Main {
 
-    static int dishesMax = 1;
-    static int client = 1;
-    static int officiants = 1;
+    static int dishesMax = 5;
+    static int client = 5;
+    static int officiants = 3;
 
     public static void main(String[] args) throws InterruptedException {
 

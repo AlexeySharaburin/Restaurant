@@ -5,10 +5,9 @@ public class Restaurant {
     final List<Dishes> dishes = new ArrayList<>();
     final List<String> waitingList = new ArrayList<>();
 
-    public Dish currentDish = new Dish();
-
     Waiter waiter = new Waiter(this);
     Guest guest = new Guest(this);
+
 
     public void startWorking() {
         waiter.waitGuest();
@@ -27,7 +26,7 @@ public class Restaurant {
             dishes.add(new Dishes(dishName));
         }
         System.out.println("Список блюд на сегодня: ");
-        for ( Dishes dishes : dishes) {
+        for (Dishes dishes : dishes) {
             System.out.println(dishes.getDishName());
         }
     }

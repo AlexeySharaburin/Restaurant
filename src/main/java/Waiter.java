@@ -1,8 +1,7 @@
 public class Waiter {
 
     Restaurant restaurant;
-    Dinner dinner;
-
+    Dish dish;
 
     public Waiter(Restaurant restaurant) {
         this.restaurant = restaurant;
@@ -17,8 +16,8 @@ public class Waiter {
 
             while (true) {
 
-                Thread.sleep(1000);
-                System.out.printf("%s готов обслужить клиента\n", Thread.currentThread().getName());
+//                Thread.sleep(1000);
+//                System.out.printf("%s готов обслужить клиента\n", Thread.currentThread().getName());
                 Thread.sleep(1000);
 
                 wait();
@@ -34,19 +33,17 @@ public class Waiter {
 
                         System.out.printf("%s несёт %s для %s\n", Thread.currentThread().getName(), restaurant.dishes.get(0).getDishName(), nameCurrentGuest);
 
-                        Dish currentDish = new Dish(nameCurrentGuest);
+                        dish = new Dish(Thread.currentThread().getName());
 
-                        restaurant.currentDish = currentDish;
+                        System.out.println(dish.getWaiterName());
 
-                        synchronized (currentDish) {
-                            System.out.println(currentDish.getGuestName());
-                            dinner.bringDish();
+                        synchronized (dish) {
+                            dish.bringDish();
                         }
 
                     } else {
                         System.out.println("Кухня закрыта!");
                     }
-
                 }
             }
 
