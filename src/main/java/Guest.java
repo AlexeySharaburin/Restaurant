@@ -1,30 +1,56 @@
 public class Guest {
 
-    Restaurant restaurant;
+    private Integer dishQuantity = 0;
 
-    public Guest(Restaurant restaurant) {
-        this.restaurant = restaurant;
-    }
+    public void welcomeGuest() {
+        String guestName = Thread.currentThread().getName();
 
-    //  Guest
-    public void waitWaiter() {
         try {
-            System.out.printf("%s пришёл в ресторан\n", Thread.currentThread().getName());
-            synchronized (restaurant.waitingList) {
-                restaurant.waitingList.add(Thread.currentThread().getName());
-            }
-            restaurant.waiter.takeTable();
-            Thread.sleep(5000);
-            System.out.printf("%s обслуживается %s\n", Thread.currentThread().getName(), restaurant.waiter.dish.getWaiterName());
+            System.out.printf("%s пришёл в ресторан\n", guestName);
+            Thread.sleep(2000);
 
-            synchronized (restaurant.waiter.dish) {
-                restaurant.waiter.dish.waitDish();
+
+            synchronized (dishQuantity) {
+                dishQuantity++;
+                if (dishQuantity > Main.dishesMax) {
+                    Thread.currentThread().interrupt();
+                }
             }
 
+            Order order = new Order(guestName);
+            Dish dish;
+
+
+            synchronized (Main.waitingList) {
+                System.out.printf("%s готов сделать заказ\n", guestName);
+                Main.waitingList.add(order);
+                Main.waitingList.notify();
+            }
+
+            synchronized (order) {
+                if (!order.readyToOrder()) {
+                    order.wait();
+                }
+                System.out.printf("%s сделал заказ у %s\n", guestName, order.getWaiterName());
+                order.notify();
+                order.wait();
+
+                synchronized (Main.dishesForGuests) {
+                    dish = Main.dishesForGuests.remove(0);
+                }
+
+                synchronized (dish) {
+                    System.out.printf("%s принёс %s для %s с надписью 'Дорогому '%s' от %s'\n", order.getWaiterName(), dish.getDishName(), guestName, dish.getGuestName(), dish.getCookName());
+                    System.out.printf("%s начал ужинать\n", guestName);
+                    Thread.sleep(5000);
+                    System.out.printf("%s съел всё своё %s, оставил на чай %s, поблагодарил %s и пошёл домой\n", guestName, dish.getDishName(), dish.getWaiterName(), dish.getCookName());
+                }
+                order.notify();
+            }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.printf("Так как на кухне закончилсь продукты, %s пошёл в соседний ресторан 'Коллекции для параллельной работы'\n", guestName);
         }
-    }
 
+    }
 }

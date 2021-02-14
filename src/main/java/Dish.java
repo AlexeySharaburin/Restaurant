@@ -1,38 +1,45 @@
 public class Dish {
 
-    String waiterName;
-    Restaurant restaurant;
+    private String dishName;
+    private String waiterName;
+    private String guestName;
+    private String cookName;
 
-    public Dish(String waiterName) {
-        this.waiterName = waiterName;
+    public String getDishName() {
+        return dishName;
     }
 
-
-    // Guest
-    public synchronized void waitDish() {
-        try {
-            wait();
-            synchronized (restaurant.dishes) {
-                System.out.printf("%s получил %s\n", Thread.currentThread().getName(), restaurant.dishes.remove(0).getDishName());
-            }
-            System.out.printf("%s приступил к ужину\n", Thread.currentThread().getName());
-            Thread.sleep(5000);
-            System.out.printf("%s закончил ужинать и пошёл домой\n", Thread.currentThread().getName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Waiter
-    public synchronized void bringDish() {
-        try {
-            notify();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void setDishName(String dishName) {
+        this.dishName = dishName;
     }
 
     public String getWaiterName() {
         return waiterName;
     }
+
+    public void setWaiterName(String waiterName) {
+        this.waiterName = waiterName;
+    }
+
+    public String getGuestName() {
+        return guestName;
+    }
+
+    public void setGuestName(String guestName) {
+        this.guestName = guestName;
+    }
+
+    public String getCookName() {
+        return cookName;
+    }
+
+    public void setCookName(String cookName) {
+        this.cookName = cookName;
+    }
+
+    public boolean readyToBring() {
+        return getDishName() != null;
+    }
+
 }
+

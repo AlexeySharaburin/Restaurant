@@ -1,67 +1,79 @@
 public class Waiter {
 
-    Restaurant restaurant;
-    Dish dish;
+    private Integer dishQuantity = 0;
 
-    public Waiter(Restaurant restaurant) {
-        this.restaurant = restaurant;
-    }
+    public void comeWaiter() {
 
-    //Waiter
-    public synchronized void waitGuest() {
+        String waiterName = Thread.currentThread().getName();
         try {
+            System.out.printf("%s пришёл на работу\n", waiterName);
 
-            System.out.printf("%s пришёл на работу\n", Thread.currentThread().getName());
-            String nameCurrentGuest;
+            while (!Thread.interrupted()) {
 
-            while (true) {
+                Order order;
+                Dish dish;
 
-//                Thread.sleep(1000);
-//                System.out.printf("%s готов обслужить клиента\n", Thread.currentThread().getName());
-                Thread.sleep(1000);
-
-                wait();
-
-                synchronized (restaurant.waitingList) {
-                    nameCurrentGuest = restaurant.waitingList.remove(0);
-                }
-
-                System.out.printf("%s принял заказ у %s\n", Thread.currentThread().getName(), nameCurrentGuest);
-
-                synchronized (restaurant.dishes) {
-                    if (!restaurant.dishes.isEmpty()) {
-
-                        System.out.printf("%s несёт %s для %s\n", Thread.currentThread().getName(), restaurant.dishes.get(0).getDishName(), nameCurrentGuest);
-
-                        dish = new Dish(Thread.currentThread().getName());
-
-                        System.out.println(dish.getWaiterName());
-
-                        synchronized (dish) {
-                            dish.bringDish();
-                        }
-
-                    } else {
-                        System.out.println("Кухня закрыта!");
+                synchronized (dishQuantity) {
+                    if (dishQuantity == Main.dishesMax) {
+                        System.out.printf("Так как на кухне закончилсь продукты, %s пошёл наводить порядок\n", waiterName);
+                        Thread.currentThread().interrupt();
                     }
                 }
+
+                Thread.sleep(3000);
+                synchronized (Main.waitingList) {
+                    System.out.printf("%s ждёт клиента\n", waiterName);
+                    if (Main.waitingList.isEmpty()) {
+                        Main.waitingList.wait();
+                    }
+                    order = Main.waitingList.remove(0);
+                }
+
+                synchronized (order) {
+                    System.out.printf("%s готов принять заказ\n", waiterName);
+                    order.setWaiterName(waiterName);
+                    order.notify();
+                    order.wait();
+
+                    dish = new Dish();
+
+                    synchronized (dish) {
+                        dish.setWaiterName(waiterName);
+                        dish.setGuestName(order.getGuestName());
+                        synchronized (Main.dishesOrders) {
+                            Main.dishesOrders.add(dish);
+                            Main.dishesOrders.notify();
+                        }
+
+                        if (!dish.readyToBring()) {
+                            Thread.sleep(2000);
+                            System.out.printf("%s ждёт, пока готовится блюдо для %s\n", waiterName, order.getGuestName());
+                            dish.wait();
+                        }
+
+                        dish = Main.readyDishes.remove(0);
+
+                        synchronized (dishQuantity) {
+                            dishQuantity++;
+                        }
+
+                        System.out.printf("%s получил от %s %s\n", waiterName, dish.getCookName(), dish.getDishName());
+                        System.out.printf("%s несет %s для %s\n", waiterName, dish.getDishName(), order.getGuestName());
+
+                        synchronized (Main.dishesForGuests) {
+                            Main.dishesForGuests.add(dish);
+                        }
+                    }
+
+                    order.notify();
+                    order.wait();
+
+                }
             }
-
-        } catch (Exception e) {
+        } catch (
+                InterruptedException e) {
             e.printStackTrace();
         }
     }
-
-    // Guest
-    public synchronized void takeTable() {
-        try {
-            notify();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
 }
-
-
 
