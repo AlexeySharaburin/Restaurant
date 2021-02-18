@@ -2,6 +2,15 @@ public class Waiter {
 
     private Integer dishQuantity = 0;
 
+    //
+    Restaurant restaurant;
+
+    public Waiter(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
+
+    //
+
     public void comeWaiter() {
 
         String waiterName = Thread.currentThread().getName();

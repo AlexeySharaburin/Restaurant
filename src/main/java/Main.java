@@ -15,6 +15,8 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
 
+        Restaurant restaurant = new Restaurant();
+
 
         List<Thread> threadsListWaiters = new ArrayList<>();
         List<Thread> threadsListGuests = new ArrayList<>();
@@ -26,12 +28,10 @@ public class Main {
 
         System.out.println("Ресторан 'Синхронизация вручную' открыт!");
         System.out.printf("Количество блюд в меню на сегодня - %d\n", dishesMax);
-        Waiter waiter = new Waiter();
-        Guest guest = new Guest();
-        Cook cook = new Cook();
+
 
         for (int i = 1; i < (chefs + 1); i++) {
-            Thread thread = new Thread(cooks, cook::cookStart, "Повар " + i);
+            Thread thread = new Thread(cooks, restaurant::comeNewCook, "Повар " + i);
             thread.start();
             threadsListCooks.add(thread);
             Thread.sleep(1000);
@@ -39,14 +39,14 @@ public class Main {
 
 
         for (int i = 1; i < (officiants + 1); i++) {
-            Thread thread = new Thread(waiters, waiter::comeWaiter, "Официант " + i);
+            Thread thread = new Thread(waiters, restaurant::comeNewWaiter, "Официант " + i);
             thread.start();
             threadsListWaiters.add(thread);
             Thread.sleep(2000);
         }
 
         for (int i = 1; i < (client + 1); i++) {
-            Thread thread = new Thread(guests, guest::welcomeGuest, "Гость " + i);
+            Thread thread = new Thread(guests, restaurant::comeNewGuest, "Гость " + i);
             thread.start();
             threadsListGuests.add(thread);
             Thread.sleep(7000);

@@ -2,6 +2,15 @@ public class Cook {
 
     private Integer dishQuantity = 0;
 
+    //
+    Restaurant restaurant;
+
+    public Cook(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
+
+    //
+
     public void cookStart() {
         String cookName = Thread.currentThread().getName();
 

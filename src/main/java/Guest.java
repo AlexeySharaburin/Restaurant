@@ -2,6 +2,15 @@ public class Guest {
 
     private Integer dishQuantity = 0;
 
+    //
+    Restaurant restaurant;
+
+    public Guest(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
+
+    //
+
     public void welcomeGuest() {
         String guestName = Thread.currentThread().getName();
 
